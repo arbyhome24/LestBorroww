@@ -25,6 +25,7 @@ import {
 } from '../data/mockData';
 import { getTranslation, TranslationKey, SUPPORTED_LANGUAGES } from '../i18n';
 import { sanitizeChatMessage } from '../utils/security';
+import { COUNTRIES_DATA } from '../data/countryRegions';
 
 interface AppContextType {
   // Auth
@@ -52,7 +53,10 @@ interface AppContextType {
   setThemeMode: (mode: 'light' | 'dark' | 'system') => void;
   isDark: boolean;
 
-  // Location
+  // Location & Country
+  countryCode: string;
+  setCountryCode: (code: string) => void;
+  selectCountry: (countryCode: string) => void;
   currentCity: string;
   currentProvince: string;
   setCurrentCity: (city: string, province?: string) => void;
@@ -187,7 +191,24 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setThemeModeState(mode);
   };
 
-  // Location
+  // Location & Country
+  const [countryCode, setCountryCodeState] = useState<string>(() => {
+    return localStorage.getItem('lb_country') || 'ID';
+  });
+
+  const setCountryCode = (code: string) => {
+    setCountryCodeState(code);
+    localStorage.setItem('lb_country', code);
+  };
+
+  const selectCountry = (newCountryCode: string) => {
+    const matched = COUNTRIES_DATA.find((c) => c.code === newCountryCode);
+    if (!matched) return;
+    setCountryCode(matched.code);
+    setLanguage(matched.language);
+    setCurrency(matched.defaultCurrency);
+  };
+
   const [currentCity, setCurrentCityState] = useState<string>('Jakarta Selatan');
   const [currentProvince, setCurrentProvince] = useState<string>('DKI Jakarta');
 
@@ -687,6 +708,9 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         themeMode,
         setThemeMode,
         isDark,
+        countryCode,
+        setCountryCode,
+        selectCountry,
         currentCity,
         currentProvince,
         setCurrentCity,

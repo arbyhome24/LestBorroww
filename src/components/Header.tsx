@@ -16,6 +16,19 @@ export const Header: React.FC = () => {
     setActiveTab,
   } = useApp();
 
+  const [currencyChanged, setCurrencyChanged] = React.useState(false);
+  const isInitialMount = React.useRef(true);
+
+  React.useEffect(() => {
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+      return;
+    }
+    setCurrencyChanged(true);
+    const timer = setTimeout(() => setCurrencyChanged(false), 700);
+    return () => clearTimeout(timer);
+  }, [currency]);
+
   const toggleTheme = () => {
     if (themeMode === 'light') setThemeMode('dark');
     else if (themeMode === 'dark') setThemeMode('system');
@@ -65,11 +78,22 @@ export const Header: React.FC = () => {
           {/* Currency / Language Chip */}
           <button
             onClick={() => setIsLanguageCurrencyOpen(true)}
-            className="flex items-center gap-1 px-2.5 py-1.5 rounded-full bg-[#EFECE8] dark:bg-[#201518] hover:bg-[#E5E0D8] dark:hover:bg-[#2A1C20] text-[#111111] dark:text-[#F5ECDF] text-xs font-medium transition-colors"
+            className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-full text-xs font-medium transition-all duration-300 cursor-pointer ${
+              currencyChanged
+                ? 'scale-110 bg-[#5A1624] text-[#F7F3EC] ring-2 ring-[#B8893C] shadow-md'
+                : 'bg-[#EFECE8] dark:bg-[#201518] hover:bg-[#E5E0D8] dark:hover:bg-[#2A1C20] text-[#111111] dark:text-[#F5ECDF]'
+            }`}
             title={t('chooseLanguage')}
           >
-            <Globe className="w-3.5 h-3.5 text-[#B8893C]" />
-            <span className="font-semibold text-[11px]">{currency}</span>
+            <Globe className={`w-3.5 h-3.5 transition-transform duration-300 ${currencyChanged ? 'text-[#D4AF6A] rotate-45' : 'text-[#B8893C]'}`} />
+            <span
+              key={currency}
+              className={`font-bold text-[11px] tracking-wider transition-all duration-300 inline-block ${
+                currencyChanged ? 'text-white' : ''
+              }`}
+            >
+              {currency}
+            </span>
           </button>
 
           {/* Theme Quick Toggle */}

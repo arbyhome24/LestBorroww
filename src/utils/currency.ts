@@ -9,6 +9,10 @@ export interface CurrencyConfig {
   fractionDigits: number;
 }
 
+/**
+ * Exchange Rate Configuration Table (Base: IDR)
+ * Easily updatable in a single place with automatic fallback
+ */
 export const CURRENCY_CONFIGS: Record<CurrencyCode, CurrencyConfig> = {
   IDR: {
     code: 'IDR',
@@ -58,6 +62,54 @@ export const CURRENCY_CONFIGS: Record<CurrencyCode, CurrencyConfig> = {
     locale: 'ja-JP',
     fractionDigits: 0,
   },
+  CNY: {
+    code: 'CNY',
+    symbol: '¥',
+    name: 'Chinese Yuan',
+    rateFromIDR: 1 / 2200,
+    locale: 'zh-CN',
+    fractionDigits: 2,
+  },
+  THB: {
+    code: 'THB',
+    symbol: '฿',
+    name: 'Thai Baht',
+    rateFromIDR: 1 / 460,
+    locale: 'th-TH',
+    fractionDigits: 0,
+  },
+  INR: {
+    code: 'INR',
+    symbol: '₹',
+    name: 'Indian Rupee',
+    rateFromIDR: 1 / 188,
+    locale: 'en-IN',
+    fractionDigits: 0,
+  },
+  VND: {
+    code: 'VND',
+    symbol: '₫',
+    name: 'Vietnamese Dong',
+    rateFromIDR: 1 / 0.62,
+    locale: 'vi-VN',
+    fractionDigits: 0,
+  },
+  AED: {
+    code: 'AED',
+    symbol: 'AED',
+    name: 'UAE Dirham',
+    rateFromIDR: 1 / 4315,
+    locale: 'ar-AE',
+    fractionDigits: 2,
+  },
+  KRW: {
+    code: 'KRW',
+    symbol: '₩',
+    name: 'South Korean Won',
+    rateFromIDR: 1 / 11.5,
+    locale: 'ko-KR',
+    fractionDigits: 0,
+  },
   AUD: {
     code: 'AUD',
     symbol: 'A$',
@@ -82,14 +134,6 @@ export const CURRENCY_CONFIGS: Record<CurrencyCode, CurrencyConfig> = {
     locale: 'ms-MY',
     fractionDigits: 2,
   },
-  AED: {
-    code: 'AED',
-    symbol: 'AED',
-    name: 'UAE Dirham',
-    rateFromIDR: 1 / 4315,
-    locale: 'ar-AE',
-    fractionDigits: 2,
-  },
   SAR: {
     code: 'SAR',
     symbol: 'SAR',
@@ -102,26 +146,33 @@ export const CURRENCY_CONFIGS: Record<CurrencyCode, CurrencyConfig> = {
 
 /**
  * Converts a base IDR amount to target currency and returns formatted string
+ * Uses Intl.NumberFormat with relevant country locale and fallbacks.
  */
 export function formatCurrency(
   amountIDR: number,
   currencyCode: CurrencyCode = 'IDR'
 ): string {
   const config = CURRENCY_CONFIGS[currencyCode] || CURRENCY_CONFIGS.IDR;
-  const converted = amountIDR * config.rateFromIDR;
-
-  if (currencyCode === 'IDR') {
-    return `Rp ${Math.round(converted).toLocaleString('id-ID')}`;
-  }
+  const rate = config.rateFromIDR && !isNaN(config.rateFromIDR) ? config.rateFromIDR : 1;
+  const converted = amountIDR * rate;
 
   try {
-    const formattedNum = converted.toLocaleString(config.locale, {
+    return new Intl.NumberFormat(config.locale, {
+      style: 'currency',
+      currency: config.code,
       minimumFractionDigits: config.fractionDigits,
       maximumFractionDigits: config.fractionDigits,
-    });
-    return `${config.symbol}${formattedNum}`;
+    }).format(converted);
   } catch {
-    return `${config.symbol}${converted.toFixed(config.fractionDigits)}`;
+    try {
+      const formattedNum = converted.toLocaleString(config.locale || 'en-US', {
+        minimumFractionDigits: config.fractionDigits,
+        maximumFractionDigits: config.fractionDigits,
+      });
+      return `${config.symbol} ${formattedNum}`;
+    } catch {
+      return `${config.symbol} ${converted.toFixed(config.fractionDigits)}`;
+    }
   }
 }
 

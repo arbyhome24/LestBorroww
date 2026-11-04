@@ -23,7 +23,12 @@ export type CurrencyCode =
   | 'CAD'
   | 'MYR'
   | 'AED'
-  | 'SAR';
+  | 'SAR'
+  | 'CNY'
+  | 'THB'
+  | 'INR'
+  | 'VND'
+  | 'KRW';
 
 export interface UserProfile {
   id: string;
