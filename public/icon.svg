@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#7A1F32"/>
+      <stop offset="100%" stop-color="#4A0F1C"/>
+    </linearGradient>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F2D086"/>
+      <stop offset="50%" stop-color="#B8893C"/>
+      <stop offset="100%" stop-color="#8F6218"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="128" fill="url(#bgGrad)"/>
+  <circle cx="256" cy="256" r="210" fill="none" stroke="url(#goldGrad)" stroke-width="4" stroke-opacity="0.4"/>
+  <circle cx="256" cy="256" r="198" fill="none" stroke="url(#goldGrad)" stroke-width="1.5" stroke-opacity="0.75"/>
+  <text x="230" y="320" font-family="'Playfair Display', Georgia, serif" font-size="200" font-weight="700" fill="url(#goldGrad)" text-anchor="middle" letter-spacing="-6">LB</text>
+  <circle cx="370" cy="310" r="18" fill="url(#goldGrad)"/>
+</svg>

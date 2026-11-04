@@ -1,0 +1,19 @@
+{
+  "id": "/",
+  "name": "LetsBorrow — Sewa & Pinjam Antar Tetangga",
+  "short_name": "LetsBorrow",
+  "description": "Platform sewa dan pinjam barang mewah, properti, dan jasa antar tetangga dengan tampilan video sosial dan perlindungan kontak aman.",
+  "theme_color": "#5A1624",
+  "background_color": "#FFFFFF",
+  "display": "standalone",
+  "start_url": "/",
+  "scope": "/",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

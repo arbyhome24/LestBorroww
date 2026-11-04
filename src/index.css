@@ -1,0 +1,91 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@layer base {
+  :root {
+    --bg-main: #FFFFFF;
+    --card-cream: #EFECE8;
+    --cream-soft: #F7F3EC;
+    --text-fg: #111111;
+    --text-muted: #6B6B6B;
+    --border-light: #E5E5E5;
+    --burgundy: #5A1624;
+    --burgundy-start: #7A1F32;
+    --burgundy-end: #4A0F1C;
+    --gold: #B8893C;
+    --gold-start: #D4AF6A;
+    --gold-end: #A67C2E;
+    --danger: #9C2A3F;
+  }
+
+  .dark {
+    --bg-main: #150E10;
+    --card-cream: #201518;
+    --cream-soft: #281B20;
+    --text-fg: #F5ECDF;
+    --text-muted: #B09F94;
+    --border-light: #3A2A2E;
+    --burgundy: #C2566B;
+    --burgundy-start: #D66D82;
+    --burgundy-end: #A13F53;
+    --gold: #D6AE67;
+    --gold-start: #E5C384;
+    --gold-end: #B58C46;
+    --danger: #C2566B;
+  }
+
+  body {
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    background-color: var(--bg-main);
+    color: var(--text-fg);
+  }
+
+  h1, h2, .font-serif-luxury {
+    font-family: 'Playfair Display', Georgia, serif;
+  }
+}
+
+/* Hide scrollbars for clean TikTok and carousel swipe */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Snap scroll utilities */
+.snap-y-mandatory {
+  scroll-snap-type: y mandatory;
+}
+.snap-always {
+  scroll-snap-stop: always;
+}
+.snap-start {
+  scroll-snap-align: start;
+}
+
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 8s linear infinite;
+}
+
+@keyframes marquee {
+  0% { transform: translateX(100%); }
+  100% { transform: translateX(-100%); }
+}
+
+.animate-marquee {
+  display: inline-block;
+  white-space: nowrap;
+  animation: marquee 12s linear infinite;
+}
